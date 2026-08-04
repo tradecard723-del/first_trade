@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>TradeCard - First Trade Bonus</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
@@ -73,7 +73,8 @@
 <body>
 
     <div class="app-container pb-28">
-        
+
+        <!-- Hero Section -->
         <div class="relative bg-gradient-to-br from-[#f8fbff] to-[#e6f0ff] pt-12 pb-12 px-6 overflow-hidden">
             
             <!-- Floating Background Elements -->
@@ -189,7 +190,7 @@
         </div>
 
         <div class="fixed bottom-0 w-full max-w-[480px] bg-white border-t border-gray-100 p-4 pb-6 z-50 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
-            <button onclick="triggerTrade()" class="w-full bg-tcLime hover:bg-[#a6ef00] text-tcDark font-black text-[17px] py-4 rounded-2xl flex justify-center items-center gap-2 shadow-[0_4px_14px_rgba(178,255,5,0.4)] active:scale-95 transition-all duration-200">
+            <button onclick="triggerAppRouting()" class="w-full bg-tcLime hover:bg-[#a6ef00] text-tcDark font-black text-[17px] py-4 rounded-2xl flex justify-center items-center gap-2 shadow-[0_4px_14px_rgba(178,255,5,0.4)] active:scale-95 transition-all duration-200">
                 TRADE NOW
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
             </button>
@@ -198,70 +199,60 @@
     </div>
 
     <script>
-        // --- 1. App Navigation Logic ---
-        function triggerTrade() {
-            try {
-                // 1. If using a standard webview framework, try to post a close message to the app native side
-                if (window.ReactNativeWebView) {
-                    window.ReactNativeWebView.postMessage('close');
-                } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.close) {
-                    window.webkit.messageHandlers.close.postMessage('');
-                } 
-                
-                // 2. Standard web back navigation (only if there is history to go back to)
-                if (window.history.length > 1 || document.referrer !== "") {
-                    window.history.back();
-                } else {
-                    // 3. Fallback: If no history, try standard window.close (without a timeout to prevent the blank white screen bug)
+        // --- 1. Robust App Navigation Logic ---
+        function triggerAppRouting() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            const isAndroid = /android/i.test(ua);
+
+            if (isAndroid) {
+                // Mandatory Android Deep Link Redirection
+                window.location.href = "https://tbay.go.link/6pkFV";
+            } else {
+                // iOS / Web Fallback Logic
+                try {
+                    if (window.ReactNativeWebView) {
+                        window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'close' }));
+                    } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.close) {
+                        window.webkit.messageHandlers.close.postMessage('');
+                    } else {
+                        // Unconditionally attempt to close the window or go back, removing the website redirect
+                        window.close();
+                        window.history.back();
+                    }
+                } catch (e) {
                     window.close();
+                    window.history.back();
                 }
-            } catch (error) {
-                console.log("Navigation fallback used.", error);
             }
         }
 
         // --- 2. Google Apps Script Tracking Logic ---
-        // Inserted your live Google Apps Script URL here:
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec"; 
 
         function generateUUID() {
-            // Generate a random string to act as a permanent User ID
             return 'tc_user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
         }
 
         function trackUserVisit() {
             try {
-                // 1. Check if user already has an ID in localStorage
                 let userId = localStorage.getItem('tradecard_campaign_uid');
                 
-                // 2. If no ID exists, create one and save it to localStorage
                 if (!userId) {
                     userId = generateUUID();
                     localStorage.setItem('tradecard_campaign_uid', userId);
-                    
-                    console.log("New user registered with ID:", userId);
-                } else {
-                    console.log("Returning user detected with ID:", userId);
                 }
 
-                // 3. Send the visit data to Google Sheets via your Apps Script URL
-                fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
-                    method: 'GET',
-                    mode: 'no-cors' // Use no-cors for simple tracking without CORS setup requirements
-                })
-                .then(() => {
-                    console.log("Tracking ping sent successfully.");
-                })
-                .catch(error => {
-                    console.error("Error pinging tracker:", error);
-                });
-
+                if (APPS_SCRIPT_URL) {
+                    fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
+                        method: 'GET',
+                        mode: 'no-cors'
+                    }).catch(error => console.error("Error pinging tracker:", error));
+                }
             } catch (error) {
-                console.error("Tracking system encountered an error (likely strict privacy settings blocking localStorage):", error);
+                console.error("Tracking error:", error);
             }
         }
 
-        // Run the tracker immediately when the page loads
         window.onload = trackUserVisit;
     </script>
 </body>
