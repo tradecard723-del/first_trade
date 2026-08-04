@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>TradeCard - First Trade Bonus</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     
@@ -199,21 +200,22 @@
     <script>
         // --- 1. App Navigation Logic ---
         function triggerTrade() {
-            // Closes the in-app browser or goes back in history
+            // Closes the in-app browser and returns to the app by triggering the back function
             try {
-                if (window.history.length > 1) {
-                    window.history.back();
-                } else {
+                // First attempt to go back in history (standard for most in-app webviews)
+                window.history.back();
+                
+                // Fallback attempt to close the window if history.back() doesn't exit the view
+                setTimeout(() => {
                     window.close();
-                }
+                }, 300);
             } catch (error) {
                 console.log("Navigation fallback used.", error);
-                window.location.href = "/"; // Fallback if browser blocks closing
             }
         }
 
         // --- 2. Google Apps Script Tracking Logic ---
-        // Replace this URL with your actual deployed Google Apps Script URL
+        // Inserted your live Google Apps Script URL here:
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec"; 
 
         function generateUUID() {
@@ -230,26 +232,23 @@
                 if (!userId) {
                     userId = generateUUID();
                     localStorage.setItem('tradecard_campaign_uid', userId);
+                    
                     console.log("New user registered with ID:", userId);
                 } else {
                     console.log("Returning user detected with ID:", userId);
                 }
 
-                // 3. Send the visit data to Google Sheets via Apps Script
-                if (APPS_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
-                    fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
-                        method: 'GET',
-                        mode: 'no-cors' // Use no-cors for simple tracking without CORS setup requirements
-                    })
-                    .then(() => {
-                        console.log("Tracking ping sent successfully.");
-                    })
-                    .catch(error => {
-                        console.error("Error pinging tracker:", error);
-                    });
-                } else {
-                    console.warn("Please replace APPS_SCRIPT_URL with your live Apps Script Web App URL to enable tracking.");
-                }
+                // 3. Send the visit data to Google Sheets via your Apps Script URL
+                fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
+                    method: 'GET',
+                    mode: 'no-cors' // Use no-cors for simple tracking without CORS setup requirements
+                })
+                .then(() => {
+                    console.log("Tracking ping sent successfully.");
+                })
+                .catch(error => {
+                    console.error("Error pinging tracker:", error);
+                });
 
             } catch (error) {
                 console.error("Tracking system encountered an error (likely strict privacy settings blocking localStorage):", error);
