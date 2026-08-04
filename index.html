@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TradeCard - First Trade Bonus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        tcBlue: '#0052FF', // Deep vibrant blue
+                        tcLightBlue: '#E6F0FF',
+                        tcLime: '#B2FF05', // The vibrant yellow-green
+                        tcDark: '#0A1A3A'
+                    },
+                    animation: {
+                        'float-slow': 'float 4s ease-in-out infinite',
+                        'float-fast': 'float 2.5s ease-in-out infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #f3f4f6; /* Gray background for desktop viewing */
+        }
+        /* Mobile app container */
+        .app-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            overflow-x: hidden;
+        }
+        /* Hide scrollbar for cleaner mobile look */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        /* Details accordion animation */
+        details > summary {
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] summary ~ * {
+            animation: slideDown 0.3s ease-in-out;
+        }
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container pb-28">
+        
+        <!-- Header / Nav -->
+        <div class="sticky top-0 w-full bg-white/90 backdrop-blur-md z-50 px-4 py-4 flex items-center justify-between border-b border-gray-100">
+            <!-- Back Button -->
+            <button onclick="goBackToApp()" class="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-tcBlue active:bg-gray-200">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-tcDark">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <div class="font-bold text-lg text-tcDark tracking-tight">Campaign</div>
+            <div class="w-8"></div> <!-- Spacer for centering -->
+        </div>
+
+        <!-- Hero Section -->
+        <div class="relative bg-gradient-to-br from-[#f8fbff] to-[#e6f0ff] pt-8 pb-12 px-6 overflow-hidden">
+            
+            <!-- Floating Background Elements -->
+            <div class="absolute top-10 right-4 w-12 h-12 bg-tcLime rounded-lg rotate-12 opacity-80 animate-float-slow drop-shadow-md"></div>
+            <div class="absolute bottom-10 -left-4 w-16 h-10 bg-tcBlue rounded-xl -rotate-12 opacity-90 animate-float-fast drop-shadow-lg flex items-center justify-center">
+                <span class="text-white font-bold text-xs">₦</span>
+            </div>
+            <div class="absolute top-32 right-12 w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+            <div class="absolute top-20 left-10 w-4 h-4 bg-tcLime rotate-45 animate-spin-slow"></div>
+
+            <!-- Badges -->
+            <div class="relative z-10 flex flex-wrap gap-2 mb-6">
+                <div class="bg-tcBlue text-white text-xs font-bold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
+                    🎁 Limited time offer
+                </div>
+                <div class="bg-white text-tcDark border border-gray-200 text-xs font-bold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-tcBlue"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Ends Aug 31
+                </div>
+            </div>
+
+            <!-- Headline -->
+            <div class="relative z-10">
+                <h1 class="text-[40px] leading-[1.1] font-black text-tcDark mb-3">
+                    Trade <span class="text-tcBlue">₦15,000</span>,<br>
+                    Get <span class="text-tcBlue">₦1,000</span> <span class="inline-block bg-tcLime text-tcDark px-2 py-0 rounded-md rotate-[-2deg] shadow-sm transform hover:scale-105 transition-transform">Free!</span>
+                </h1>
+                <p class="text-gray-600 font-medium text-[15px] leading-relaxed max-w-[280px]">
+                    Reach a cumulative total of ₦15,000 in trades to unlock your cash reward instantly.
+                </p>
+            </div>
+        </div>
+
+        <!-- How it works -->
+        <div class="px-6 py-10 bg-white">
+            <h2 class="text-xl font-black text-tcDark mb-6">How to get your reward</h2>
+            
+            <div class="space-y-6 relative">
+                <!-- Vertical Line -->
+                <div class="absolute left-6 top-6 bottom-6 w-0.5 bg-gray-100 z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tcLightBlue text-tcBlue flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">1</div>
+                    <div class="pt-2">
+                        <h3 class="font-bold text-tcDark text-lg">Start Trading</h3>
+                        <p class="text-gray-500 text-sm mt-1">Sell any gift card (USD, EUR, GBP, CAD, AUD). Both Fast and Normal trades qualify.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tcLightBlue text-tcBlue flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">2</div>
+                    <div class="pt-2">
+                        <h3 class="font-bold text-tcDark text-lg">Hit the Target</h3>
+                        <p class="text-gray-500 text-sm mt-1">Reach a cumulative total of <b>₦15,000</b> in successful trades.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tcLime text-tcDark flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">3</div>
+                    <div class="pt-2">
+                        <h3 class="font-bold text-tcDark text-lg">Get ₦1,000 Cash</h3>
+                        <p class="text-gray-500 text-sm mt-1">The reward drops automatically into your TC wallet within 24 hours. Withdraw anytime!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="px-6 py-8 bg-gray-50 border-t border-gray-100">
+            <h2 class="text-xl font-black text-tcDark mb-5">Frequently Asked Questions</h2>
+            
+            <div class="space-y-3">
+                <!-- Q1 -->
+                <details class="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                    <summary class="flex justify-between items-center font-semibold cursor-pointer p-4 select-none text-tcDark">
+                        Am I eligible for this?
+                        <span class="transition-transform group-open:rotate-180 text-tcBlue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
+                        If you are seeing this page, you've been exclusively selected! This offer is for registered users who have never completed a successful trade on TradeCard.
+                    </div>
+                </details>
+
+                <!-- Q2 -->
+                <details class="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                    <summary class="flex justify-between items-center font-semibold cursor-pointer p-4 select-none text-tcDark">
+                        How do I claim the reward?
+                        <span class="transition-transform group-open:rotate-180 text-tcBlue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
+                        No action needed! Just reach a cumulative total of ₦15,000 in trades by August 31, 2026. The ₦1,000 will be credited to your TC wallet automatically.
+                    </div>
+                </details>
+
+                <!-- Q3 -->
+                <details class="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                    <summary class="flex justify-between items-center font-semibold cursor-pointer p-4 select-none text-tcDark">
+                        Can I withdraw the ₦1,000?
+                        <span class="transition-transform group-open:rotate-180 text-tcBlue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
+                        Absolutely. Once credited, it behaves like normal cash balance. You can withdraw it to your bank account immediately or save it for later.
+                    </div>
+                </details>
+            </div>
+        </div>
+
+        <!-- Sticky Bottom CTA -->
+        <div class="fixed bottom-0 w-full max-w-[480px] bg-white border-t border-gray-100 p-4 pb-6 z-50 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
+            <button onclick="triggerTrade()" class="w-full bg-tcLime hover:bg-[#a6ef00] text-tcDark font-black text-[17px] py-4 rounded-2xl flex justify-center items-center gap-2 shadow-[0_4px_14px_rgba(178,255,5,0.4)] active:scale-95 transition-all duration-200">
+                TRADE NOW
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // 1. App Navigation Functions
+        function goBackToApp() {
+            // This relies on the standard browser history to close an in-app webview
+            // if this is the first page loaded in that view. 
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                // Fallback for some iOS/Android in-app browsers
+                window.close();
+            }
+        }
+
+        function triggerTrade() {
+            // Since this is in-app, pressing Trade Now should ideally close the banner 
+            // and route them to the trade tab. 
+            // In a real app environment you might use a deep link here: window.location.href = 'tradecard://trade'
+            // For now, we will simulate closing the webview to return to the app interface.
+            goBackToApp();
+        }
+
+        // 2. Automated User Tracking Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const STORAGE_KEY = 'tc_first_trade_campaign_uid';
+            
+            // Generate or retrieve User ID
+            let uid = localStorage.getItem(STORAGE_KEY);
+            if (!uid) {
+                // Generate a random UUID-like string if crypto isn't available
+                if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                    uid = crypto.randomUUID();
+                } else {
+                    uid = 'tc_usr_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                }
+                localStorage.setItem(STORAGE_KEY, uid);
+            }
+
+            console.log("Tracking User ID:", uid);
+
+            // Google Apps Script Web App URL
+            // IMPORTANT: Replace this URL with your actual Apps Script deployment URL!
+            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec';
+            
+            // Only fire the fetch if the placeholder has been replaced
+            if (!GAS_WEB_APP_URL.includes('PLACEHOLDER')) {
+                // We use GET and 'no-cors' mode to ensure the request fires successfully 
+                // from the client without strict CORS blocking in mobile webviews.
+                fetch(`${GAS_WEB_APP_URL}?uid=${uid}`, {
+                    method: 'GET',
+                    mode: 'no-cors', 
+                    cache: 'no-cache'
+                }).then(() => {
+                    console.log('Visit tracked successfully.');
+                }).catch(err => {
+                    console.error('Error tracking visit:', err);
+                });
+            } else {
+                console.warn('Tracking skipped: Please update GAS_WEB_APP_URL in the HTML with your Google Apps Script URL.');
+            }
+        });
+    </script>
+</body>
+</html>
