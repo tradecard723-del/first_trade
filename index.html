@@ -15,9 +15,9 @@
                         sans: ['Inter', 'sans-serif'],
                     },
                     colors: {
-                        tcBlue: '#0052FF', // Deep vibrant blue
+                        tcBlue: '#0052FF',
                         tcLightBlue: '#E6F0FF',
-                        tcLime: '#B2FF05', // The vibrant yellow-green
+                        tcLime: '#B2FF05',
                         tcDark: '#0A1A3A'
                     },
                     animation: {
@@ -38,9 +38,9 @@
     
     <style>
         body {
-            background-color: #f3f4f6; /* Gray background for desktop viewing */
+            background-color: #f3f4f6; 
+            -webkit-tap-highlight-color: transparent;
         }
-        /* Mobile app container */
         .app-container {
             max-width: 480px;
             margin: 0 auto;
@@ -50,12 +50,10 @@
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
             overflow-x: hidden;
         }
-        /* Hide scrollbar for cleaner mobile look */
         ::-webkit-scrollbar {
             width: 0px;
             background: transparent;
         }
-        /* Details accordion animation */
         details > summary {
             list-style: none;
         }
@@ -75,21 +73,7 @@
 
     <div class="app-container pb-28">
         
-        <!-- Header / Nav -->
-        <div class="sticky top-0 w-full bg-white/90 backdrop-blur-md z-50 px-4 py-4 flex items-center justify-between border-b border-gray-100">
-            <!-- Back Button -->
-            <button onclick="goBackToApp()" class="p-2 -ml-2 rounded-full hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-tcBlue active:bg-gray-200">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-tcDark">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-            </button>
-            <div class="font-bold text-lg text-tcDark tracking-tight">Campaign</div>
-            <div class="w-8"></div> <!-- Spacer for centering -->
-        </div>
-
-        <!-- Hero Section -->
-        <div class="relative bg-gradient-to-br from-[#f8fbff] to-[#e6f0ff] pt-8 pb-12 px-6 overflow-hidden">
+        <div class="relative bg-gradient-to-br from-[#f8fbff] to-[#e6f0ff] pt-12 pb-12 px-6 overflow-hidden">
             
             <!-- Floating Background Elements -->
             <div class="absolute top-10 right-4 w-12 h-12 bg-tcLime rounded-lg rotate-12 opacity-80 animate-float-slow drop-shadow-md"></div>
@@ -112,7 +96,7 @@
 
             <!-- Headline -->
             <div class="relative z-10">
-                <h1 class="text-[40px] leading-[1.1] font-black text-tcDark mb-3">
+                <h1 class="text-[40px] leading-[1.1] font-black text-tcDark mb-3 tracking-tight">
                     Trade <span class="text-tcBlue">₦15,000</span>,<br>
                     Get <span class="text-tcBlue">₦1,000</span> <span class="inline-block bg-tcLime text-tcDark px-2 py-0 rounded-md rotate-[-2deg] shadow-sm transform hover:scale-105 transition-transform">Free!</span>
                 </h1>
@@ -122,7 +106,6 @@
             </div>
         </div>
 
-        <!-- How it works -->
         <div class="px-6 py-10 bg-white">
             <h2 class="text-xl font-black text-tcDark mb-6">How to get your reward</h2>
             
@@ -144,7 +127,7 @@
                     <div class="w-12 h-12 rounded-full bg-tcLightBlue text-tcBlue flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">2</div>
                     <div class="pt-2">
                         <h3 class="font-bold text-tcDark text-lg">Hit the Target</h3>
-                        <p class="text-gray-500 text-sm mt-1">Reach a cumulative total of <b>₦15,000</b> in successful trades.</p>
+                        <p class="text-gray-500 text-sm mt-1">Reach a cumulative total of <b>₦15,000</b> in successful trades. Every trade adds up!</p>
                     </div>
                 </div>
 
@@ -159,7 +142,6 @@
             </div>
         </div>
 
-        <!-- FAQ Section -->
         <div class="px-6 py-8 bg-gray-50 border-t border-gray-100">
             <h2 class="text-xl font-black text-tcDark mb-5">Frequently Asked Questions</h2>
             
@@ -173,7 +155,7 @@
                         </span>
                     </summary>
                     <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
-                        If you are seeing this page, you've been exclusively selected! This offer is for registered users who have never completed a successful trade on TradeCard.
+                        If you are seeing this page, you've been exclusively selected! This offer is available for you until the deadline. Just ensure your total successful trades hit ₦15,000.
                     </div>
                 </details>
 
@@ -205,7 +187,6 @@
             </div>
         </div>
 
-        <!-- Sticky Bottom CTA -->
         <div class="fixed bottom-0 w-full max-w-[480px] bg-white border-t border-gray-100 p-4 pb-6 z-50 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
             <button onclick="triggerTrade()" class="w-full bg-tcLime hover:bg-[#a6ef00] text-tcDark font-black text-[17px] py-4 rounded-2xl flex justify-center items-center gap-2 shadow-[0_4px_14px_rgba(178,255,5,0.4)] active:scale-95 transition-all duration-200">
                 TRADE NOW
@@ -216,65 +197,67 @@
     </div>
 
     <script>
-        // 1. App Navigation Functions
-        function goBackToApp() {
-            // This relies on the standard browser history to close an in-app webview
-            // if this is the first page loaded in that view. 
-            if (window.history.length > 1) {
-                window.history.back();
-            } else {
-                // Fallback for some iOS/Android in-app browsers
-                window.close();
-            }
-        }
-
+        // --- 1. App Navigation Logic ---
         function triggerTrade() {
-            // Since this is in-app, pressing Trade Now should ideally close the banner 
-            // and route them to the trade tab. 
-            // In a real app environment you might use a deep link here: window.location.href = 'tradecard://trade'
-            // For now, we will simulate closing the webview to return to the app interface.
-            goBackToApp();
+            // Closes the in-app browser or goes back in history
+            try {
+                if (window.history.length > 1) {
+                    window.history.back();
+                } else {
+                    window.close();
+                }
+            } catch (error) {
+                console.log("Navigation fallback used.", error);
+                window.location.href = "/"; // Fallback if browser blocks closing
+            }
         }
 
-        // 2. Automated User Tracking Logic
-        document.addEventListener('DOMContentLoaded', () => {
-            const STORAGE_KEY = 'tc_first_trade_campaign_uid';
-            
-            // Generate or retrieve User ID
-            let uid = localStorage.getItem(STORAGE_KEY);
-            if (!uid) {
-                // Generate a random UUID-like string if crypto isn't available
-                if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-                    uid = crypto.randomUUID();
+        // --- 2. Google Apps Script Tracking Logic ---
+        // Replace this URL with your actual deployed Google Apps Script URL
+        const APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
+
+        function generateUUID() {
+            // Generate a random string to act as a permanent User ID
+            return 'tc_user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        }
+
+        function trackUserVisit() {
+            try {
+                // 1. Check if user already has an ID in localStorage
+                let userId = localStorage.getItem('tradecard_campaign_uid');
+                
+                // 2. If no ID exists, create one and save it to localStorage
+                if (!userId) {
+                    userId = generateUUID();
+                    localStorage.setItem('tradecard_campaign_uid', userId);
+                    console.log("New user registered with ID:", userId);
                 } else {
-                    uid = 'tc_usr_' + Math.random().toString(36).substring(2, 15) + Date.now().toString(36);
+                    console.log("Returning user detected with ID:", userId);
                 }
-                localStorage.setItem(STORAGE_KEY, uid);
-            }
 
-            console.log("Tracking User ID:", uid);
+                // 3. Send the visit data to Google Sheets via Apps Script
+                if (APPS_SCRIPT_URL !== "https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec") {
+                    fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
+                        method: 'GET',
+                        mode: 'no-cors' // Use no-cors for simple tracking without CORS setup requirements
+                    })
+                    .then(() => {
+                        console.log("Tracking ping sent successfully.");
+                    })
+                    .catch(error => {
+                        console.error("Error pinging tracker:", error);
+                    });
+                } else {
+                    console.warn("Please replace APPS_SCRIPT_URL with your live Apps Script Web App URL to enable tracking.");
+                }
 
-            // Google Apps Script Web App URL
-            // IMPORTANT: Replace this URL with your actual Apps Script deployment URL!
-            const GAS_WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec';
-            
-            // Only fire the fetch if the placeholder has been replaced
-            if (!GAS_WEB_APP_URL.includes('PLACEHOLDER')) {
-                // We use GET and 'no-cors' mode to ensure the request fires successfully 
-                // from the client without strict CORS blocking in mobile webviews.
-                fetch(`${GAS_WEB_APP_URL}?uid=${uid}`, {
-                    method: 'GET',
-                    mode: 'no-cors', 
-                    cache: 'no-cache'
-                }).then(() => {
-                    console.log('Visit tracked successfully.');
-                }).catch(err => {
-                    console.error('Error tracking visit:', err);
-                });
-            } else {
-                console.warn('Tracking skipped: Please update GAS_WEB_APP_URL in the HTML with your Google Apps Script URL.');
+            } catch (error) {
+                console.error("Tracking system encountered an error (likely strict privacy settings blocking localStorage):", error);
             }
-        });
+        }
+
+        // Run the tracker immediately when the page loads
+        window.onload = trackUserVisit;
     </script>
 </body>
 </html>
