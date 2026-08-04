@@ -200,15 +200,21 @@
     <script>
         // --- 1. App Navigation Logic ---
         function triggerTrade() {
-            // Closes the in-app browser and returns to the app by triggering the back function
             try {
-                // First attempt to go back in history (standard for most in-app webviews)
-                window.history.back();
+                // 1. If using a standard webview framework, try to post a close message to the app native side
+                if (window.ReactNativeWebView) {
+                    window.ReactNativeWebView.postMessage('close');
+                } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.close) {
+                    window.webkit.messageHandlers.close.postMessage('');
+                } 
                 
-                // Fallback attempt to close the window if history.back() doesn't exit the view
-                setTimeout(() => {
+                // 2. Standard web back navigation (only if there is history to go back to)
+                if (window.history.length > 1 || document.referrer !== "") {
+                    window.history.back();
+                } else {
+                    // 3. Fallback: If no history, try standard window.close (without a timeout to prevent the blank white screen bug)
                     window.close();
-                }, 300);
+                }
             } catch (error) {
                 console.log("Navigation fallback used.", error);
             }
