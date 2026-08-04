@@ -190,7 +190,7 @@
         </div>
 
         <div class="fixed bottom-0 w-full max-w-[480px] bg-white border-t border-gray-100 p-4 pb-6 z-50 pb-safe shadow-[0_-10px_20px_rgba(0,0,0,0.03)]">
-            <button onclick="triggerAppRouting()" class="w-full bg-tcLime hover:bg-[#a6ef00] text-tcDark font-black text-[17px] py-4 rounded-2xl flex justify-center items-center gap-2 shadow-[0_4px_14px_rgba(178,255,5,0.4)] active:scale-95 transition-all duration-200">
+            <button onclick="window.location.href='https://tradecard.go.link/?adj_t=1ush3q9i&adj_label=sell'" class="w-full bg-tcLime hover:bg-[#a6ef00] text-tcDark font-black text-[17px] py-4 rounded-2xl flex justify-center items-center gap-2 shadow-[0_4px_14px_rgba(178,255,5,0.4)] active:scale-95 transition-all duration-200">
                 TRADE NOW
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
             </button>
@@ -199,34 +199,7 @@
     </div>
 
     <script>
-        // --- 1. Robust App Navigation Logic ---
-        function triggerAppRouting() {
-            const ua = navigator.userAgent || navigator.vendor || window.opera;
-            const isAndroid = /android/i.test(ua);
-
-            if (isAndroid) {
-                // Mandatory Android Deep Link Redirection
-                window.location.href = "https://tbay.go.link/6pkFV";
-            } else {
-                // iOS / Web Fallback Logic
-                try {
-                    if (window.ReactNativeWebView) {
-                        window.ReactNativeWebView.postMessage(JSON.stringify({ action: 'close' }));
-                    } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.close) {
-                        window.webkit.messageHandlers.close.postMessage('');
-                    } else {
-                        // Unconditionally attempt to close the window or go back, removing the website redirect
-                        window.close();
-                        window.history.back();
-                    }
-                } catch (e) {
-                    window.close();
-                    window.history.back();
-                }
-            }
-        }
-
-        // --- 2. Google Apps Script Tracking Logic ---
+        // --- 1. Google Apps Script Tracking Logic ---
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec"; 
 
         function generateUUID() {
