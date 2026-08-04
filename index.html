@@ -214,7 +214,7 @@
 
         // --- 2. Google Apps Script Tracking Logic ---
         // Replace this URL with your actual deployed Google Apps Script URL
-        const APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE"; 
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec"; 
 
         function generateUUID() {
             // Generate a random string to act as a permanent User ID
@@ -236,7 +236,7 @@
                 }
 
                 // 3. Send the visit data to Google Sheets via Apps Script
-                if (APPS_SCRIPT_URL !== https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec) {
+                if (APPS_SCRIPT_URL !== "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
                     fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
                         method: 'GET',
                         mode: 'no-cors' // Use no-cors for simple tracking without CORS setup requirements
