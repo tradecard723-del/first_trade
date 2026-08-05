@@ -3,919 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>Tbay - Daily Challenge</title>
+    <title>TradeCard - First Trade Bonus</title>
     
-    <!-- Premium Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     
-    <!-- Confetti Library for Poppers -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-    <style>
-        :root {
-            /* Tbay 2.0 Brand Colors */
-            --tbay-primary: #00CCCC;
-            --tbay-primary-hover: #00b3b3;
-            --tbay-secondary: #003152;
-            --tbay-bg: #f8fafc;
-            --tbay-white: #ffffff;
-            
-            /* Status Colors */
-            --tbay-success: #2ecc71;
-            --tbay-error: #e74c3c;
-            --tbay-accent: #f26822; 
-            --text-main: #003152;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        tcBlue: '#0052FF',
+                        tcLightBlue: '#E6F0FF',
+                        tcLime: '#B2FF05',
+                        tcDark: '#0A1A3A'
+                    },
+                    animation: {
+                        'float-slow': 'float 4s ease-in-out infinite',
+                        'float-fast': 'float 2.5s ease-in-out infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        }
+                    }
+                }
+            }
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    </script>
+    
+    <style>
+        body {
+            background-color: #f3f4f6; 
             -webkit-tap-highlight-color: transparent;
         }
-
-        body {
-            background-color: #cbd5e1;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .app-viewport {
-            width: 100%;
+        .app-container {
             max-width: 480px;
-            background-color: var(--tbay-bg);
+            margin: 0 auto;
+            background-color: #ffffff;
             min-height: 100vh;
             position: relative;
-            box-shadow: 0 0 40px rgba(0, 49, 82, 0.1);
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
             overflow-x: hidden;
         }
-
-        .header {
-            background-color: var(--tbay-bg);
-            padding: max(40px, calc(env(safe-area-inset-top) + 16px)) 24px 16px 24px;
-            display: flex;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 50;
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
         }
-
-        .back-btn {
-            background: #ffffff;
-            border: 1px solid var(--border-color);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-            color: var(--tbay-secondary);
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        details > summary {
+            list-style: none;
         }
-
-        .back-btn:active {
-            transform: scale(0.9);
-            background: #f1f5f9;
-        }
-
-        .header-logo {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            padding-right: 40px;
-        }
-
-        .header-logo img {
-            height: 28px;
-        }
-
-        .content-container {
-            padding: 16px 24px 40px 24px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .quiz-container {
+        details > summary::-webkit-details-marker {
             display: none;
-            animation: fadeIn 0.4s ease forwards;
-            flex-grow: 1;
-            flex-direction: column;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
+        details[open] summary ~ * {
+            animation: slideDown 0.3s ease-in-out;
         }
-
-        .question-badge {
-            color: var(--tbay-accent);
-            font-weight: 800;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
+        @keyframes slideDown {
+            0% { opacity: 0; transform: translateY(-10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
-
-        .question-text {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--tbay-secondary);
-            line-height: 1.4;
-            margin-bottom: 32px;
-        }
-
-        /* Gamified Option Buttons */
-        .options-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-
-        .option-btn {
-            width: 100%;
-            background: var(--tbay-white);
-            border: 2px solid transparent;
-            box-shadow: 0 4px 16px rgba(0, 49, 82, 0.04);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: left;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-main);
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-        }
-
-        .option-btn:active {
-            transform: scale(0.97);
-        }
-
-        /* Visual Indicator (Radio / Checkbox) */
-        .indicator {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid #cbd5e1;
-            margin-right: 16px;
-            flex-shrink: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.25s ease;
-        }
-
-        .indicator::after {
-            content: '';
-            width: 10px;
-            height: 10px;
-            background: var(--tbay-white);
-            border-radius: inherit;
-            transform: scale(0);
-            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .options-wrapper.multi-mode .indicator {
-            border-radius: 4px;
-        }
-
-        .option-btn.selected {
-            background: var(--tbay-secondary);
-            color: var(--tbay-white);
-            box-shadow: 0 12px 24px rgba(0, 49, 82, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        .option-btn.selected:active {
-            transform: scale(0.97) translateY(0);
-        }
-
-        .option-btn.selected .indicator {
-            border-color: var(--tbay-white);
-        }
-
-        .option-btn.selected .indicator::after {
-            transform: scale(1);
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: var(--tbay-primary);
-            color: var(--tbay-secondary);
-            border: none;
-            padding: 20px;
-            border-radius: 16px;
-            font-size: 17px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 8px 20px rgba(0, 204, 204, 0.25);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .submit-btn:disabled {
-            background: #cbd5e1;
-            color: #94a3b8;
-            box-shadow: none;
-            cursor: not-allowed;
-        }
-
-        .submit-btn:not(:disabled):active {
-            transform: scale(0.98);
-        }
-
-        .multi-hint {
-            display: none;
-            color: var(--text-muted);
-            font-size: 14px;
-            font-style: italic;
-            margin-top: -20px;
-            margin-bottom: 24px;
-            line-height: 1.4;
-        }
-
-        .result-card {
-            display: none;
-            background: var(--tbay-white);
-            border-radius: 24px;
-            padding: 32px 24px;
-            box-shadow: 0 10px 30px rgba(0, 49, 82, 0.08);
-            text-align: center;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        .result-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px auto;
-        }
-        
-        .result-icon.success { background: rgba(46, 204, 113, 0.1); color: var(--tbay-success); }
-        .result-icon.error { background: rgba(231, 76, 60, 0.1); color: var(--tbay-error); }
-        .result-icon svg { width: 40px; height: 40px; stroke: currentColor; }
-
-        .result-title {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--tbay-secondary);
-            margin-bottom: 12px;
-        }
-
-        .result-message {
-            font-size: 15px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 24px;
-        }
-
-        /* Coupon UI */
-        .coupon-box {
-            background: #f8fafc;
-            border: 2px dashed var(--tbay-primary);
-            border-radius: 16px;
-            padding: 24px 20px;
-            margin-bottom: 24px;
-        }
-
-        .coupon-label {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--tbay-primary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .coupon-code {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--tbay-secondary);
-            letter-spacing: 2px;
-            margin-bottom: 16px;
-        }
-
-        .copy-btn {
-            background: var(--tbay-secondary);
-            color: var(--tbay-white);
-            border: none;
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 800;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .copy-btn:active { transform: scale(0.96); }
-
-        /* Educational UI */
-        .education-box {
-            background: rgba(0, 49, 82, 0.03);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: left;
-            margin-bottom: 24px;
-        }
-
-        .edu-label {
-            font-size: 13px;
-            font-weight: 800;
-            color: var(--tbay-secondary);
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .edu-text {
-            font-size: 14px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            font-weight: 500;
-        }
-        .edu-text strong { color: var(--tbay-secondary); }
-
-        .disclaimer {
-            font-size: 12px;
-            color: #94a3b8;
-            font-weight: 600;
-            line-height: 1.5;
-            margin-top: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            text-align: left;
-            background: #ffffff;
-            padding: 12px;
-            border-radius: 12px;
-            border: 1px solid #f1f5f9;
-        }
-
-        /* Loading */
-        .loading-overlay {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 60px 20px;
-            text-align: center;
-            flex-grow: 1;
-        }
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 204, 204, 0.2);
-            border-left-color: var(--tbay-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* App Download Section */
-        .app-download-section {
-            margin-top: auto; 
-            padding-top: 40px;
-            text-align: center;
-        }
-
-        .app-download-title {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-        }
-        
-        .app-download-title::before, .app-download-title::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: var(--border-color);
-        }
-
-        .download-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .store-btn {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            background: var(--tbay-secondary);
-            color: var(--tbay-white);
-            text-decoration: none;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            box-shadow: 0 4px 12px rgba(0, 49, 82, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        .store-btn:active {
-            transform: scale(0.96);
-        }
-
-        .store-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-
     </style>
 </head>
 <body>
 
-    <div class="app-viewport">
-        
-        <div class="header">
-            <button class="back-btn" onclick="routeBack()" aria-label="Go Back">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
-            </button>
-            <div class="header-logo">
-                <img src="https://mcusercontent.com/4ceda90aa48260f0c3c397068/images/3089e9cb-945f-b383-b957-d5175b3d8c39.png" alt="Tbay">
-            </div>
-        </div>
+    <div class="app-container">
 
-        <div class="content-container">
+        <!-- Hero Section -->
+        <div class="relative bg-gradient-to-br from-[#f8fbff] to-[#e6f0ff] pt-12 pb-12 px-6 overflow-hidden">
             
-            <!-- Loading State -->
-            <div class="loading-overlay" id="loadingState">
-                <div class="spinner"></div>
-                <p style="color: var(--tbay-secondary); font-weight: 700;">Loading today's challenge...</p>
+            <!-- Floating Background Elements -->
+            <div class="absolute top-10 right-4 w-12 h-12 bg-tcLime rounded-lg rotate-12 opacity-80 animate-float-slow drop-shadow-md"></div>
+            <div class="absolute bottom-2 -left-4 w-16 h-10 bg-tcBlue rounded-xl -rotate-12 opacity-90 animate-float-fast drop-shadow-lg flex items-center justify-center">
+                <span class="text-white font-bold text-xs">₦</span>
+            </div>
+            <div class="absolute top-32 right-12 w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+            <div class="absolute top-20 left-10 w-4 h-4 bg-tcLime rotate-45 animate-spin-slow"></div>
+
+            <!-- Badges -->
+            <div class="relative z-10 flex flex-wrap gap-2 mb-6">
+                <div class="bg-tcBlue text-white text-xs font-bold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-md">
+                    🎁 Limited time offer
+                </div>
+                <div class="bg-white text-tcDark border border-gray-200 text-xs font-bold px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 shadow-sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-tcBlue"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Ends Aug 31
+                </div>
             </div>
 
-            <!-- Quiz Card -->
-            <div class="quiz-container" id="quizCard">
-                <div class="question-badge">Today's Challenge</div>
-                <h2 class="question-text" id="dynamicQuestion">Loading question...</h2>
-                
-                <p class="multi-hint" id="multiSelectHint">
-                    * This is a multiple-selection question. Please select all that apply.
+            <!-- Headline -->
+            <div class="relative z-10">
+                <h1 class="text-[40px] leading-[1.1] font-black text-tcDark mb-3 tracking-tight">
+                    Trade <span class="text-tcBlue">₦15,000</span>,<br>
+                    Get <span class="text-tcBlue">₦1,000</span> <span class="inline-block bg-tcLime text-tcDark px-2 py-0 rounded-md rotate-[-2deg] shadow-sm transform hover:scale-105 transition-transform">Free!</span>
+                </h1>
+                <p class="text-gray-600 font-medium text-[15px] leading-relaxed max-w-[280px]">
+                    Reach a cumulative total of ₦15,000 in trades to unlock your cash reward instantly.
                 </p>
-                
-                <div class="options-wrapper" id="optionsContainer">
-                    <button class="option-btn" onclick="selectOption('A')" id="btnA">
-                        <div class="indicator"></div>
-                        <span id="textA">Option A</span>
-                    </button>
-                    
-                    <button class="option-btn" onclick="selectOption('B')" id="btnB">
-                        <div class="indicator"></div>
-                        <span id="textB">Option B</span>
-                    </button>
-                    
-                    <button class="option-btn" onclick="selectOption('C')" id="btnC">
-                        <div class="indicator"></div>
-                        <span id="textC">Option C</span>
-                    </button>
-                    
-                    <button class="option-btn" onclick="selectOption('D')" id="btnD">
-                        <div class="indicator"></div>
-                        <span id="textD">Option D</span>
-                    </button>
-                </div>
-
-                <button class="submit-btn" id="submitBtn" onclick="submitAnswer()" disabled>
-                    Submit Answer
-                </button>
             </div>
-
-            <!-- System Message -->
-            <div class="result-card" id="systemMessageCard">
-                <div class="result-icon" style="background: rgba(0, 204, 204, 0.1); color: var(--tbay-primary);">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <polyline points="12 6 12 12 16 14"></polyline>
-                    </svg>
-                </div>
-                <h2 class="result-title" id="systemTitle">Message</h2>
-                <p class="result-message" id="systemText">Text goes here.</p>
-                <button class="submit-btn" style="background: #f1f5f9; color: var(--tbay-secondary); box-shadow: none;" onclick="routeBack()">
-                    Back to Homepage
-                </button>
-            </div>
-
-            <!-- Success Card -->
-            <div class="result-card" id="successCard">
-                <div class="result-icon success">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                </div>
-                <h2 class="result-title" id="successTitle">Correct!</h2>
-                <p class="result-message" id="successMessage">You really know your companion! Enjoy your exclusive daily reward.</p>
-                
-                <div class="coupon-box" id="couponBoxUI">
-                    <span class="coupon-label">Your Reward Code</span>
-                    <div class="coupon-code" id="couponCode">LOADING...</div>
-                    <button class="copy-btn" id="copyBtn" onclick="copyCoupon()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        Copy Code
-                    </button>
-                </div>
-
-                <div class="disclaimer">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--tbay-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                    Please ensure you are updated to the latest version of the Tbay app to claim your coupon code.
-                </div>
-            </div>
-
-            <!-- Error/Educational Card -->
-            <div class="result-card" id="errorCard">
-                <div class="result-icon error">
-                    <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </div>
-                <h2 class="result-title" id="errorTitle">Not Quite!</h2>
-                <p class="result-message" id="errorMessage">But every mistake is a chance to learn more about us.</p>
-                
-                <!-- Dynamic Recap Box -->
-                <div id="recapBox" style="display:none; text-align:left; background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color);">
-                    <div style="color: var(--text-muted); margin-bottom: 4px; font-size: 13px; font-weight: 600;">Today's Challenge:</div>
-                    <div id="recapQ" style="font-weight: 800; color: var(--tbay-secondary); margin-bottom: 12px; font-size: 14px; line-height: 1.4;"></div>
-                    <div style="display: flex; gap: 12px; margin-bottom: 4px;">
-                        <div style="flex: 1;"><span style="color: var(--text-muted); font-size: 12px;">Your Answer:</span> <br><strong id="recapUser" style="color: var(--tbay-error); font-size: 14px;"></strong></div>
-                        <div style="flex: 1;"><span style="color: var(--text-muted); font-size: 12px;">Correct Answer:</span> <br><strong id="recapCorrect" style="color: var(--tbay-success); font-size: 14px;"></strong></div>
-                    </div>
-                </div>
-
-                <div class="education-box">
-                    <div class="edu-label">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--tbay-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
-                        Did You Know?
-                    </div>
-                    <p class="edu-text" id="dynamicKnowledgeText">Loading educational text...</p>
-                </div>
-
-                <button class="submit-btn" style="background: #f1f5f9; color: var(--tbay-secondary); margin-top: 16px; box-shadow: none;" onclick="routeBack()">
-                    Back to Homepage
-                </button>
-            </div>
-
-            <!-- App Download Links -->
-            <div class="app-download-section">
-                <div class="app-download-title">Get the Tbay App</div>
-                <div class="download-buttons">
-                    <a href="https://apps.apple.com/ng/app/gift-card-on-tbay/id6472409948" target="_blank" class="store-btn" onclick="trackStoreClick('App Store')">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-.815 1.54.1 2.62.77 3.39 1.95-3.01 1.77-2.5 5.5.42 6.74-.75 1.78-1.57 3.55-2.39 4.29zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.36-1.95 4.35-3.74 4.25z"/>
-                        </svg>
-                        App Store
-                    </a>
-                    <a href="https://play.google.com/store/apps/details?id=com.gonglian.tbay&gl=ng&hl=en_NG" target="_blank" class="store-btn" onclick="trackStoreClick('Google Play')">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M5 21.34V2.66c0-.52.56-.84 1.01-.56l14.28 8.44c.43.25.43.9 0 1.15L6.01 21.9c-.45.28-1.01-.04-1.01-.56z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                        </svg>
-                        Google Play
-                    </a>
-                </div>
-            </div>
-
         </div>
+
+        <div class="px-6 py-10 bg-white">
+            <h2 class="text-xl font-black text-tcDark mb-6">How to get your reward</h2>
+            
+            <div class="space-y-6 relative">
+                <!-- Vertical Line -->
+                <div class="absolute left-6 top-6 bottom-6 w-0.5 bg-gray-100 z-0"></div>
+
+                <!-- Step 1 -->
+                <div class="relative z-10 flex gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tcLightBlue text-tcBlue flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">1</div>
+                    <div class="pt-2">
+                        <h3 class="font-bold text-tcDark text-lg">Start Trading</h3>
+                        <p class="text-gray-500 text-sm mt-1">Sell any gift card from our wide range of supported brands and currencies. Every successful trade counts towards your goal.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="relative z-10 flex gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tcLightBlue text-tcBlue flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">2</div>
+                    <div class="pt-2">
+                        <h3 class="font-bold text-tcDark text-lg">Hit the Target</h3>
+                        <p class="text-gray-500 text-sm mt-1">Reach a cumulative total of <b>₦15,000</b> in successful trades. Every trade adds up!</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="relative z-10 flex gap-4">
+                    <div class="w-12 h-12 rounded-full bg-tcLime text-tcDark flex items-center justify-center font-black text-xl shrink-0 border-4 border-white shadow-sm">3</div>
+                    <div class="pt-2">
+                        <h3 class="font-bold text-tcDark text-lg">Get ₦1,000 Cash</h3>
+                        <p class="text-gray-500 text-sm mt-1">The reward drops automatically into your TC wallet within 24 hours. Withdraw anytime!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="px-6 py-8 bg-gray-50 border-t border-gray-100">
+            <h2 class="text-xl font-black text-tcDark mb-5">Frequently Asked Questions</h2>
+            
+            <div class="space-y-3">
+                <!-- Q1 -->
+                <details class="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                    <summary class="flex justify-between items-center font-semibold cursor-pointer p-4 select-none text-tcDark">
+                        Am I eligible for this?
+                        <span class="transition-transform group-open:rotate-180 text-tcBlue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
+                        If you are seeing this page, you've been exclusively selected! This offer is available for you until the deadline. Just ensure your total successful trades hit ₦15,000.
+                    </div>
+                </details>
+
+                <!-- Q2 -->
+                <details class="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                    <summary class="flex justify-between items-center font-semibold cursor-pointer p-4 select-none text-tcDark">
+                        How do I claim the reward?
+                        <span class="transition-transform group-open:rotate-180 text-tcBlue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
+                        No action needed! Just reach a cumulative total of ₦15,000 in trades by August 31, 2026. The ₦1,000 will be credited to your TC wallet automatically.
+                    </div>
+                </details>
+
+                <!-- Q3 -->
+                <details class="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                    <summary class="flex justify-between items-center font-semibold cursor-pointer p-4 select-none text-tcDark">
+                        Can I withdraw the ₦1,000?
+                        <span class="transition-transform group-open:rotate-180 text-tcBlue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </span>
+                    </summary>
+                    <div class="text-gray-600 text-sm p-4 pt-0 leading-relaxed border-t border-gray-50 mt-2">
+                        Absolutely. Once credited, it behaves like normal cash balance. You can withdraw it to your bank account immediately or save it for later.
+                    </div>
+                </details>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        // REPLACE WITH YOUR LATEST APPS SCRIPT URL
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww54fL-BApPwgoAeMx_ETDC4JqjRFr15sejHdKpc5JCMIVQBi6VgO3jnnCrJMl7y-4/exec"; 
-        
-        let currentSelections = [];
-        let currentQType = 'single';
-        let todayDateStr = "";
+        // --- 1. Google Apps Script Tracking Logic ---
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqDkIV9WwKSIdwhPL_CiVSQS6Ul3E0BRRMjfD07XJAGNvP6zgco1Ja1JtG3OZsSKF38w/exec"; 
 
-        // --- 1. Navigation & App Routing Logic ---
-        function routeBack() {
-            const ua = navigator.userAgent || navigator.vendor || window.opera;
-            if (/android/i.test(ua)) {
-                window.location.href = "https://tbay.go.link/6pkFV";
-            } else {
-                if (window.history.length > 1) {
-                    window.history.back();
-                } else {
-                    try { window.close(); } catch (e) {}
-                    window.location.href = "https://tbay.store";
-                }
-            }
+        function generateUUID() {
+            return 'tc_user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
         }
 
-        // --- 2. Robust Device Tracking Logic ---
-        function getOrCreateDeviceId() {
-            let deviceId = localStorage.getItem('tbay_quiz_device_id');
-            let sessionFallback = sessionStorage.getItem('tbay_quiz_session_backup');
-
-            if (!deviceId && sessionFallback) {
-                deviceId = sessionFallback;
-                localStorage.setItem('tbay_quiz_device_id', deviceId);
-            } else if (!deviceId) {
-                deviceId = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('tbay_quiz_device_id', deviceId);
-                sessionStorage.setItem('tbay_quiz_session_backup', deviceId);
-            }
-            return deviceId;
-        }
-
-        // --- 3. App Initialization ---
-        async function loadDailyQuiz() {
-            const deviceId = getOrCreateDeviceId();
-            
+        function trackUserVisit() {
             try {
-                const response = await fetch(`${APPS_SCRIPT_URL}?action=getQuestion&deviceId=${deviceId}`);
+                let userId = localStorage.getItem('tradecard_campaign_uid');
                 
-                const contentType = response.headers.get("content-type");
-                if (!contentType || !contentType.includes("application/json")) {
-                    throw new Error("HTML_RECEIVED");
+                if (!userId) {
+                    userId = generateUUID();
+                    localStorage.setItem('tradecard_campaign_uid', userId);
                 }
 
-                const data = await response.json();
-                document.getElementById('loadingState').style.display = 'none';
-
-                if (data.status === 'already_played_correct') {
-                    document.getElementById('successTitle').innerText = "Already Won Today!";
-                    document.getElementById('successMessage').innerHTML = "Here is your reward code for today. <br><strong>Come back tomorrow for a new challenge!</strong>";
-                    if (data.coupon === 'OUT_OF_STOCK') {
-                        document.getElementById('couponBoxUI').innerHTML = `<p style="color: var(--tbay-error); font-weight: 800; font-size: 14px; text-align: center;">All rewards for today have been claimed!</p>`;
-                    } else {
-                        document.getElementById('couponCode').innerText = data.coupon;
-                    }
-                    document.getElementById('successCard').style.display = 'block';
-
-                } else if (data.status === 'already_played_wrong') {
-                    document.getElementById('errorTitle').innerText = "Already Played Today";
-                    document.getElementById('errorMessage').innerHTML = "You missed today's question, but learning is winning! <br><strong>Come back tomorrow for a new challenge.</strong>";
-                    
-                    document.getElementById('recapQ').innerText = data.question;
-                    document.getElementById('recapUser').innerText = data.userGuess;
-                    document.getElementById('recapCorrect').innerText = data.correctAnswer;
-                    document.getElementById('recapBox').style.display = 'block';
-
-                    document.getElementById('dynamicKnowledgeText').innerHTML = data.knowledgeText; 
-                    document.getElementById('errorCard').style.display = 'block';
-
-                } else if (data.status === 'no_question') {
-                    showSystemMessage("No Quiz Today", "There is no challenge scheduled for today. Come back tomorrow to try again!");
-                } else if (data.error) {
-                    showSystemMessage("Database Error", "Unable to load today's challenge. Please try again later.");
-                } else if (data.status === 'success') {
-                    todayDateStr = data.date;
-                    
-                    currentQType = data.qType === 'multi' ? 'multi' : 'single'; 
-                    currentSelections = [];
-                    
-                    const optionsContainer = document.getElementById('optionsContainer');
-                    const multiHint = document.getElementById('multiSelectHint');
-                    
-                    const buttons = document.querySelectorAll('.option-btn');
-                    buttons.forEach(btn => btn.classList.remove('selected'));
-                    document.getElementById('submitBtn').disabled = true;
-                    
-                    if(currentQType === 'multi') {
-                        optionsContainer.classList.add('multi-mode');
-                        multiHint.style.display = 'block';
-                    } else {
-                        optionsContainer.classList.remove('multi-mode');
-                        multiHint.style.display = 'none';
-                    }
-                    
-                    document.getElementById('dynamicQuestion').innerText = data.question;
-                    document.getElementById('textA').innerText = data.optA;
-                    document.getElementById('textB').innerText = data.optB;
-                    document.getElementById('textC').innerText = data.optC;
-                    document.getElementById('textD').innerText = data.optD;
-                    
-                    document.getElementById('quizCard').style.display = 'flex';
-                } else {
-                    showSystemMessage("System Error", "Could not load the quiz. Please try again later.");
+                if (APPS_SCRIPT_URL) {
+                    fetch(`${APPS_SCRIPT_URL}?uid=${encodeURIComponent(userId)}`, {
+                        method: 'GET',
+                        mode: 'no-cors'
+                    }).catch(error => console.error("Error pinging tracker:", error));
                 }
             } catch (error) {
-                document.getElementById('loadingState').style.display = 'none';
-                
-                if (error.message === "HTML_RECEIVED") {
-                    showSystemMessage("Temporary Issue", "We are setting up today's challenge. Please check back in a few minutes.");
-                } else {
-                    showSystemMessage("Connection Issue", "Please check your internet connection and reload the page.");
-                }
+                console.error("Tracking error:", error);
             }
         }
 
-        function showSystemMessage(title, text) {
-            document.getElementById('systemTitle').innerText = title;
-            document.getElementById('systemText').innerText = text;
-            document.getElementById('systemMessageCard').style.display = 'block';
-        }
-
-        window.onload = loadDailyQuiz;
-
-        // --- 4. Quiz Interaction Logic ---
-        function selectOption(letter) {
-            if (currentQType === 'single') {
-                currentSelections = [letter];
-                const buttons = document.querySelectorAll('.option-btn');
-                buttons.forEach(btn => btn.classList.remove('selected'));
-                document.getElementById('btn' + letter).classList.add('selected');
-            } else {
-                const index = currentSelections.indexOf(letter);
-                if (index > -1) {
-                    currentSelections.splice(index, 1);
-                    document.getElementById('btn' + letter).classList.remove('selected');
-                } else {
-                    currentSelections.push(letter);
-                    document.getElementById('btn' + letter).classList.add('selected');
-                }
-            }
-            
-            document.getElementById('submitBtn').disabled = currentSelections.length === 0;
-        }
-
-        async function submitAnswer() {
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = "Checking...";
-            
-            const deviceId = getOrCreateDeviceId();
-            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown";
-
-            const answerPayload = currentSelections.sort().join(',');
-
-            const payload = {
-                action: 'submitAnswer',
-                deviceId: deviceId,
-                date: todayDateStr,
-                answer: answerPayload,
-                timezone: timezone
-            };
-
-            try {
-                const response = await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify(payload)
-                });
-                
-                const result = await response.json();
-                document.getElementById('quizCard').style.display = 'none';
-
-                if (result.isCorrect) {
-                    if (result.coupon === 'OUT_OF_STOCK') {
-                        document.getElementById('couponBoxUI').innerHTML = `
-                            <p style="color: var(--tbay-error); font-weight: 800; font-size: 14px; text-align:center;">All rewards for today have been claimed! Check back early tomorrow.</p>
-                        `;
-                    } else {
-                        document.getElementById('couponCode').innerText = result.coupon;
-                    }
-                    document.getElementById('successCard').style.display = 'block';
-                    firePoppers();
-                } else {
-                    document.getElementById('recapQ').innerText = document.getElementById('dynamicQuestion').innerText;
-                    document.getElementById('recapUser').innerText = answerPayload;
-                    document.getElementById('recapCorrect').innerText = result.correctAnswer;
-                    document.getElementById('recapBox').style.display = 'block';
-
-                    document.getElementById('dynamicKnowledgeText').innerHTML = result.knowledgeText; 
-                    document.getElementById('errorCard').style.display = 'block';
-                }
-
-            } catch (error) {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Submit Answer";
-                
-                const currentHtml = submitBtn.innerHTML;
-                submitBtn.innerHTML = "Network Error - Try Again";
-                submitBtn.style.backgroundColor = "var(--tbay-error)";
-                submitBtn.style.color = "white";
-                
-                setTimeout(() => {
-                    submitBtn.innerHTML = currentHtml;
-                    submitBtn.style.backgroundColor = "var(--tbay-primary)";
-                    submitBtn.style.color = "var(--tbay-secondary)";
-                }, 3000);
-            }
-        }
-
-        // --- 5. Confetti Animation (Poppers) ---
-        function firePoppers() {
-            var duration = 3 * 1000;
-            var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 100 };
-
-            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-
-                var particleCount = 50 * (timeLeft / duration);
-                
-                confetti(Object.assign({}, defaults, { 
-                    particleCount, 
-                    origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-                    colors: ['#00CCCC', '#003152', '#2ecc71', '#f26822']
-                }));
-                confetti(Object.assign({}, defaults, { 
-                    particleCount, 
-                    origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-                    colors: ['#00CCCC', '#003152', '#2ecc71', '#f26822']
-                }));
-            }, 250);
-        }
-
-        // --- 6. Clipboard Fallback Logic ---
-        function copyCoupon() {
-            const code = document.getElementById('couponCode').innerText;
-            if(code === 'LOADING...') return;
-            
-            const btn = document.getElementById('copyBtn');
-            const originalHTML = btn.innerHTML;
-
-            function showSuccess() {
-                btn.innerHTML = "Copied! ✅";
-                btn.style.background = "var(--tbay-success)";
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    btn.style.background = "var(--tbay-secondary)";
-                }, 2000);
-            }
-
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(code).then(showSuccess);
-            } else {
-                let textArea = document.createElement("textarea");
-                textArea.value = code;
-                textArea.style.position = "fixed"; textArea.style.left = "-999999px";
-                document.body.appendChild(textArea);
-                textArea.focus(); textArea.select();
-                try { document.execCommand('copy'); showSuccess(); } catch (err) {}
-                textArea.remove();
-            }
-        }
-
-        // --- 7. App Store Click Tracking ---
-        function trackStoreClick(storeName) {
-            const deviceId = getOrCreateDeviceId();
-            
-            const payload = {
-                action: 'logClick',
-                button: storeName,
-                deviceId: deviceId
-            };
-
-            // Fire-and-forget background request. We catch errors silently so the user never sees them.
-            fetch(APPS_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify(payload)
-            }).catch(e => { /* Silently fail if blocked by adblockers */ });
-        }
+        window.onload = trackUserVisit;
     </script>
 </body>
 </html>
