@@ -15,10 +15,14 @@
 
     <style>
         :root {
+            /* Tbay 2.0 Brand Colors */
             --tbay-primary: #00CCCC;
+            --tbay-primary-hover: #00b3b3;
             --tbay-secondary: #003152;
             --tbay-bg: #f8fafc;
             --tbay-white: #ffffff;
+            
+            /* Status Colors */
             --tbay-success: #2ecc71;
             --tbay-error: #e74c3c;
             --tbay-accent: #f26822; 
@@ -36,7 +40,7 @@
         }
 
         body {
-            background-color: #cbd5e1; 
+            background-color: #cbd5e1;
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -88,7 +92,7 @@
             flex-grow: 1;
             display: flex;
             justify-content: center;
-            padding-right: 40px; 
+            padding-right: 40px;
         }
 
         .header-logo img {
@@ -131,6 +135,7 @@
             margin-bottom: 32px;
         }
 
+        /* Gamified Option Buttons */
         .options-wrapper {
             display: flex;
             flex-direction: column;
@@ -141,7 +146,7 @@
         .option-btn {
             width: 100%;
             background: var(--tbay-white);
-            border: 2px solid transparent; 
+            border: 2px solid transparent;
             box-shadow: 0 4px 16px rgba(0, 49, 82, 0.04);
             border-radius: 16px;
             padding: 20px;
@@ -159,10 +164,11 @@
             transform: scale(0.97);
         }
 
+        /* Visual Indicator (Radio / Checkbox) */
         .indicator {
             width: 24px;
             height: 24px;
-            border-radius: 50%; /* Default to circle for single choice */
+            border-radius: 50%;
             border: 2px solid #cbd5e1;
             margin-right: 16px;
             flex-shrink: 0;
@@ -177,14 +183,13 @@
             width: 10px;
             height: 10px;
             background: var(--tbay-white);
-            border-radius: inherit; 
+            border-radius: inherit;
             transform: scale(0);
             transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* CSS that morphs the indicator to a square when multi-mode is applied */
         .options-wrapper.multi-mode .indicator {
-            border-radius: 4px; 
+            border-radius: 4px;
         }
 
         .option-btn.selected {
@@ -220,7 +225,6 @@
             box-shadow: 0 8px 20px rgba(0, 204, 204, 0.25);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: auto;
         }
         
         .submit-btn:disabled {
@@ -282,6 +286,7 @@
             margin-bottom: 24px;
         }
 
+        /* Coupon UI */
         .coupon-box {
             background: #f8fafc;
             border: 2px dashed var(--tbay-primary);
@@ -326,6 +331,7 @@
         }
         .copy-btn:active { transform: scale(0.96); }
 
+        /* Educational UI */
         .education-box {
             background: rgba(0, 49, 82, 0.03);
             border: 1px solid var(--border-color);
@@ -369,6 +375,7 @@
             border: 1px solid #f1f5f9;
         }
 
+        /* Loading */
         .loading-overlay {
             display: flex;
             flex-direction: column;
@@ -388,6 +395,66 @@
             margin-bottom: 20px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* App Download Section */
+        .app-download-section {
+            margin-top: auto; 
+            padding-top: 40px;
+            text-align: center;
+        }
+
+        .app-download-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        .app-download-title::before, .app-download-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .store-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--tbay-secondary);
+            color: var(--tbay-white);
+            text-decoration: none;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 49, 82, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .store-btn:active {
+            transform: scale(0.96);
+        }
+
+        .store-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
 
     </style>
 </head>
@@ -409,11 +476,13 @@
 
         <div class="content-container">
             
+            <!-- Loading State -->
             <div class="loading-overlay" id="loadingState">
                 <div class="spinner"></div>
                 <p style="color: var(--tbay-secondary); font-weight: 700;">Loading today's challenge...</p>
             </div>
 
+            <!-- Quiz Card -->
             <div class="quiz-container" id="quizCard">
                 <div class="question-badge">Today's Challenge</div>
                 <h2 class="question-text" id="dynamicQuestion">Loading question...</h2>
@@ -449,6 +518,7 @@
                 </button>
             </div>
 
+            <!-- System Message -->
             <div class="result-card" id="systemMessageCard">
                 <div class="result-icon" style="background: rgba(0, 204, 204, 0.1); color: var(--tbay-primary);">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -463,6 +533,7 @@
                 </button>
             </div>
 
+            <!-- Success Card -->
             <div class="result-card" id="successCard">
                 <div class="result-icon success">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -492,12 +563,9 @@
                     </svg>
                     Please ensure you are updated to the latest version of the Tbay app to claim your coupon code.
                 </div>
-                
-                <button class="submit-btn" style="background: var(--tbay-bg); color: var(--tbay-secondary); margin-top: 16px; box-shadow: none;" onclick="routeBack()">
-                    Back to Homepage
-                </button>
             </div>
 
+            <!-- Error/Educational Card -->
             <div class="result-card" id="errorCard">
                 <div class="result-icon error">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -508,6 +576,7 @@
                 <h2 class="result-title" id="errorTitle">Not Quite!</h2>
                 <p class="result-message" id="errorMessage">But every mistake is a chance to learn more about us.</p>
                 
+                <!-- Dynamic Recap Box -->
                 <div id="recapBox" style="display:none; text-align:left; background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color);">
                     <div style="color: var(--text-muted); margin-bottom: 4px; font-size: 13px; font-weight: 600;">Today's Challenge:</div>
                     <div id="recapQ" style="font-weight: 800; color: var(--tbay-secondary); margin-bottom: 12px; font-size: 14px; line-height: 1.4;"></div>
@@ -534,17 +603,38 @@
                 </button>
             </div>
 
+            <!-- App Download Links -->
+            <div class="app-download-section">
+                <div class="app-download-title">Get the Tbay App</div>
+                <div class="download-buttons">
+                    <a href="https://apps.apple.com/ng/app/gift-card-on-tbay/id6472409948" target="_blank" class="store-btn" onclick="trackStoreClick('App Store')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-.815 1.54.1 2.62.77 3.39 1.95-3.01 1.77-2.5 5.5.42 6.74-.75 1.78-1.57 3.55-2.39 4.29zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.32 2.36-1.95 4.35-3.74 4.25z"/>
+                        </svg>
+                        App Store
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.gonglian.tbay&gl=ng&hl=en_NG" target="_blank" class="store-btn" onclick="trackStoreClick('Google Play')">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M5 21.34V2.66c0-.52.56-.84 1.01-.56l14.28 8.44c.43.25.43.9 0 1.15L6.01 21.9c-.45.28-1.01-.04-1.01-.56z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                        Google Play
+                    </a>
+                </div>
+            </div>
+
         </div>
     </div>
 
     <script>
-        // === UPDATE THIS URL WITH YOUR BRAND NEW DEPLOYMENT URL ===
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbziFuv08Hwj5p3bPieDPT4QpMwhesqBPnrHibMx_Ej7wNAvqMUmdklZ8xh3FKp0KuWh/exec"; 
+        // --- CONFIGURATION ---
+        // REPLACE WITH YOUR LATEST APPS SCRIPT URL
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww54fL-BApPwgoAeMx_ETDC4JqjRFr15sejHdKpc5JCMIVQBi6VgO3jnnCrJMl7y-4/exec"; 
         
         let currentSelections = [];
         let currentQType = 'single';
         let todayDateStr = "";
 
+        // --- 1. Navigation & App Routing Logic ---
         function routeBack() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             if (/android/i.test(ua)) {
@@ -559,6 +649,7 @@
             }
         }
 
+        // --- 2. Robust Device Tracking Logic ---
         function getOrCreateDeviceId() {
             let deviceId = localStorage.getItem('tbay_quiz_device_id');
             let sessionFallback = sessionStorage.getItem('tbay_quiz_session_backup');
@@ -574,6 +665,7 @@
             return deviceId;
         }
 
+        // --- 3. App Initialization ---
         async function loadDailyQuiz() {
             const deviceId = getOrCreateDeviceId();
             
@@ -612,17 +704,11 @@
 
                 } else if (data.status === 'no_question') {
                     showSystemMessage("No Quiz Today", "There is no challenge scheduled for today. Come back tomorrow to try again!");
-                    
-                } else if (data.status === 'coupons_empty') {
-                    showSystemMessage("All Rewards Claimed", "Today's exclusive coupon codes have been completely used up! Please come back early tomorrow for a new challenge and another chance to win.");
-                    
                 } else if (data.error) {
-                    showSystemMessage("Temporary Issue", "Could not load the database. Please try again later.");
-                    
+                    showSystemMessage("Database Error", "Unable to load today's challenge. Please try again later.");
                 } else if (data.status === 'success') {
                     todayDateStr = data.date;
                     
-                    // THIS IS THE CRITICAL LOGIC THAT MORPHS THE UI
                     currentQType = data.qType === 'multi' ? 'multi' : 'single'; 
                     currentSelections = [];
                     
@@ -634,7 +720,6 @@
                     document.getElementById('submitBtn').disabled = true;
                     
                     if(currentQType === 'multi') {
-                        // Adds the multi-mode class, forcing border-radius to 4px (square) in CSS
                         optionsContainer.classList.add('multi-mode');
                         multiHint.style.display = 'block';
                     } else {
@@ -650,13 +735,13 @@
                     
                     document.getElementById('quizCard').style.display = 'flex';
                 } else {
-                    showSystemMessage("Connection Issue", "Could not load the quiz. Please try again later.");
+                    showSystemMessage("System Error", "Could not load the quiz. Please try again later.");
                 }
             } catch (error) {
                 document.getElementById('loadingState').style.display = 'none';
                 
                 if (error.message === "HTML_RECEIVED") {
-                    showSystemMessage("Temporary Issue", "We are setting things up. Please try again later.");
+                    showSystemMessage("Temporary Issue", "We are setting up today's challenge. Please check back in a few minutes.");
                 } else {
                     showSystemMessage("Connection Issue", "Please check your internet connection and reload the page.");
                 }
@@ -671,6 +756,7 @@
 
         window.onload = loadDailyQuiz;
 
+        // --- 4. Quiz Interaction Logic ---
         function selectOption(letter) {
             if (currentQType === 'single') {
                 currentSelections = [letter];
@@ -730,6 +816,11 @@
                     document.getElementById('successCard').style.display = 'block';
                     firePoppers();
                 } else {
+                    document.getElementById('recapQ').innerText = document.getElementById('dynamicQuestion').innerText;
+                    document.getElementById('recapUser').innerText = answerPayload;
+                    document.getElementById('recapCorrect').innerText = result.correctAnswer;
+                    document.getElementById('recapBox').style.display = 'block';
+
                     document.getElementById('dynamicKnowledgeText').innerHTML = result.knowledgeText; 
                     document.getElementById('errorCard').style.display = 'block';
                 }
@@ -751,6 +842,7 @@
             }
         }
 
+        // --- 5. Confetti Animation (Poppers) ---
         function firePoppers() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
@@ -777,6 +869,7 @@
             }, 250);
         }
 
+        // --- 6. Clipboard Fallback Logic ---
         function copyCoupon() {
             const code = document.getElementById('couponCode').innerText;
             if(code === 'LOADING...') return;
@@ -804,6 +897,24 @@
                 try { document.execCommand('copy'); showSuccess(); } catch (err) {}
                 textArea.remove();
             }
+        }
+
+        // --- 7. App Store Click Tracking ---
+        function trackStoreClick(storeName) {
+            const deviceId = getOrCreateDeviceId();
+            
+            const payload = {
+                action: 'logClick',
+                button: storeName,
+                deviceId: deviceId
+            };
+
+            // Fire-and-forget background request. We catch errors silently so the user never sees them.
+            fetch(APPS_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify(payload)
+            }).catch(e => { /* Silently fail if blocked by adblockers */ });
         }
     </script>
 </body>
