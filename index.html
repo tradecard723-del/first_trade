@@ -15,17 +15,13 @@
 
     <style>
         :root {
-            /* Tbay 2.0 Brand Colors */
             --tbay-primary: #00CCCC;
-            --tbay-primary-hover: #00b3b3;
             --tbay-secondary: #003152;
-            --tbay-bg: #f8fafc; /* Lighter, cleaner background for gamified look */
+            --tbay-bg: #f8fafc;
             --tbay-white: #ffffff;
-            
-            /* Status Colors */
             --tbay-success: #2ecc71;
             --tbay-error: #e74c3c;
-            --tbay-accent: #f26822; /* Orange accent from reference */
+            --tbay-accent: #f26822; 
             --text-main: #003152;
             --text-muted: #64748b;
             --border-color: #e2e8f0;
@@ -40,7 +36,7 @@
         }
 
         body {
-            background-color: #cbd5e1; /* Simulates native app background outside webview */
+            background-color: #cbd5e1; 
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -59,7 +55,7 @@
         }
 
         .header {
-            background-color: var(--tbay-bg); /* Match background for seamless look */
+            background-color: var(--tbay-bg);
             padding: max(40px, calc(env(safe-area-inset-top) + 16px)) 24px 16px 24px;
             display: flex;
             align-items: center;
@@ -92,7 +88,7 @@
             flex-grow: 1;
             display: flex;
             justify-content: center;
-            padding-right: 40px; /* Offset to perfectly center logo */
+            padding-right: 40px; 
         }
 
         .header-logo img {
@@ -135,7 +131,6 @@
             margin-bottom: 32px;
         }
 
-        /* Gamified Option Buttons */
         .options-wrapper {
             display: flex;
             flex-direction: column;
@@ -146,7 +141,7 @@
         .option-btn {
             width: 100%;
             background: var(--tbay-white);
-            border: 2px solid transparent; /* Used for selected state transition */
+            border: 2px solid transparent; 
             box-shadow: 0 4px 16px rgba(0, 49, 82, 0.04);
             border-radius: 16px;
             padding: 20px;
@@ -164,11 +159,10 @@
             transform: scale(0.97);
         }
 
-        /* Visual Indicator (Radio / Checkbox) */
         .indicator {
             width: 24px;
             height: 24px;
-            border-radius: 50%; /* Default to radio circle */
+            border-radius: 50%; /* Default to circle for single choice */
             border: 2px solid #cbd5e1;
             margin-right: 16px;
             flex-shrink: 0;
@@ -183,17 +177,16 @@
             width: 10px;
             height: 10px;
             background: var(--tbay-white);
-            border-radius: inherit; /* Inherits circle or square based on mode */
+            border-radius: inherit; 
             transform: scale(0);
             transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Multi-select Mode adjustments */
+        /* CSS that morphs the indicator to a square when multi-mode is applied */
         .options-wrapper.multi-mode .indicator {
-            border-radius: 4px; /* Square checkboxes for multi-answer */
+            border-radius: 4px; 
         }
 
-        /* Selected State (Mimicking the solid purple in reference, using Tbay Navy) */
         .option-btn.selected {
             background: var(--tbay-secondary);
             color: var(--tbay-white);
@@ -227,7 +220,7 @@
             box-shadow: 0 8px 20px rgba(0, 204, 204, 0.25);
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-top: auto; /* Pushes to bottom */
+            margin-top: auto;
         }
         
         .submit-btn:disabled {
@@ -241,7 +234,6 @@
             transform: scale(0.98);
         }
 
-        /* Hint Box */
         .multi-hint {
             display: none;
             color: var(--text-muted);
@@ -290,7 +282,6 @@
             margin-bottom: 24px;
         }
 
-        /* Coupon UI */
         .coupon-box {
             background: #f8fafc;
             border: 2px dashed var(--tbay-primary);
@@ -335,7 +326,6 @@
         }
         .copy-btn:active { transform: scale(0.96); }
 
-        /* Educational UI for Wrong Answer */
         .education-box {
             background: rgba(0, 49, 82, 0.03);
             border: 1px solid var(--border-color);
@@ -379,7 +369,6 @@
             border: 1px solid #f1f5f9;
         }
 
-        /* Loading */
         .loading-overlay {
             display: flex;
             flex-direction: column;
@@ -420,7 +409,6 @@
 
         <div class="content-container">
             
-            <!-- Loading State -->
             <div class="loading-overlay" id="loadingState">
                 <div class="spinner"></div>
                 <p style="color: var(--tbay-secondary); font-weight: 700;">Loading today's challenge...</p>
@@ -461,7 +449,6 @@
                 </button>
             </div>
 
-            <!-- System Message (No Questions / General Info / Exhausted Coupons) -->
             <div class="result-card" id="systemMessageCard">
                 <div class="result-icon" style="background: rgba(0, 204, 204, 0.1); color: var(--tbay-primary);">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -476,7 +463,6 @@
                 </button>
             </div>
 
-            <!-- Success Card -->
             <div class="result-card" id="successCard">
                 <div class="result-icon success">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -512,7 +498,6 @@
                 </button>
             </div>
 
-            <!-- Error/Educational Card -->
             <div class="result-card" id="errorCard">
                 <div class="result-icon error">
                     <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
@@ -523,7 +508,6 @@
                 <h2 class="result-title" id="errorTitle">Not Quite!</h2>
                 <p class="result-message" id="errorMessage">But every mistake is a chance to learn more about us.</p>
                 
-                <!-- Dynamic Recap Box -->
                 <div id="recapBox" style="display:none; text-align:left; background: #f8fafc; padding: 16px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border-color);">
                     <div style="color: var(--text-muted); margin-bottom: 4px; font-size: 13px; font-weight: 600;">Today's Challenge:</div>
                     <div id="recapQ" style="font-weight: 800; color: var(--tbay-secondary); margin-bottom: 12px; font-size: 14px; line-height: 1.4;"></div>
@@ -554,14 +538,13 @@
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxqiaofGaFz_5bFurMCkrk170h4FhR8CloMTE3CdOwq4f_CgC-ZnPxiLVbiXJk975EL/exec"; 
+        // === UPDATE THIS URL WITH YOUR BRAND NEW DEPLOYMENT URL ===
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbziFuv08Hwj5p3bPieDPT4QpMwhesqBPnrHibMx_Ej7wNAvqMUmdklZ8xh3FKp0KuWh/exec"; 
         
         let currentSelections = [];
         let currentQType = 'single';
         let todayDateStr = "";
 
-        // --- 1. Navigation & App Routing Logic ---
         function routeBack() {
             const ua = navigator.userAgent || navigator.vendor || window.opera;
             if (/android/i.test(ua)) {
@@ -576,7 +559,6 @@
             }
         }
 
-        // --- 2. Robust Device Tracking Logic ---
         function getOrCreateDeviceId() {
             let deviceId = localStorage.getItem('tbay_quiz_device_id');
             let sessionFallback = sessionStorage.getItem('tbay_quiz_session_backup');
@@ -592,7 +574,6 @@
             return deviceId;
         }
 
-        // --- 3. App Initialization ---
         async function loadDailyQuiz() {
             const deviceId = getOrCreateDeviceId();
             
@@ -633,7 +614,6 @@
                     showSystemMessage("No Quiz Today", "There is no challenge scheduled for today. Come back tomorrow to try again!");
                     
                 } else if (data.status === 'coupons_empty') {
-                    // NEW: Handles the scenario where they arrive and no coupons are left
                     showSystemMessage("All Rewards Claimed", "Today's exclusive coupon codes have been completely used up! Please come back early tomorrow for a new challenge and another chance to win.");
                     
                 } else if (data.error) {
@@ -642,6 +622,7 @@
                 } else if (data.status === 'success') {
                     todayDateStr = data.date;
                     
+                    // THIS IS THE CRITICAL LOGIC THAT MORPHS THE UI
                     currentQType = data.qType === 'multi' ? 'multi' : 'single'; 
                     currentSelections = [];
                     
@@ -653,6 +634,7 @@
                     document.getElementById('submitBtn').disabled = true;
                     
                     if(currentQType === 'multi') {
+                        // Adds the multi-mode class, forcing border-radius to 4px (square) in CSS
                         optionsContainer.classList.add('multi-mode');
                         multiHint.style.display = 'block';
                     } else {
@@ -689,7 +671,6 @@
 
         window.onload = loadDailyQuiz;
 
-        // --- 4. Quiz Interaction Logic ---
         function selectOption(letter) {
             if (currentQType === 'single') {
                 currentSelections = [letter];
@@ -770,7 +751,6 @@
             }
         }
 
-        // --- 5. Confetti Animation (Poppers) ---
         function firePoppers() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
@@ -797,7 +777,6 @@
             }, 250);
         }
 
-        // --- 6. Clipboard Fallback Logic ---
         function copyCoupon() {
             const code = document.getElementById('couponCode').innerText;
             if(code === 'LOADING...') return;
